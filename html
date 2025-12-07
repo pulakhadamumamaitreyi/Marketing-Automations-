@@ -1,0 +1,62 @@
+<!-- save as form.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Simple Signup Form</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body { font-family: Arial, sans-serif; padding: 2rem; }
+    form { max-width: 480px; margin: 0 auto; }
+    label { display:block; margin-top:12px; }
+    input, button { width:100%; padding:8px; margin-top:6px; }
+  </style>
+</head>
+<body>
+  <h2>Sign Up</h2>
+  <form id="leadForm">
+    <label for="name">Name</label>
+    <input id="name" name="name" required />
+
+    <label for="email">Email</label>
+    <input id="email" name="email" type="email" required />
+
+    <label for="phone">Phone</label>
+    <input id="phone" name="phone" type="tel" />
+
+    <button type="submit">Submit</button>
+  </form>
+
+  <div id="message" style="margin-top:1rem"></div>
+
+  <script>
+    // Change this to your hosted webhook (self-hosted or Make webhook URL)
+    const WEBHOOK_URL = "https://REPLACE_ME_YOUR_SERVER_OR_MAKE_WEBHOOK";
+
+    document.getElementById('leadForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+
+      const payload = { name, email, phone, submittedAt: new Date().toISOString() };
+
+      try {
+        const res = await fetch(WEBHOOK_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        if (res.ok) {
+          document.getElementById('message').innerText = 'Thanks! Check your email for confirmation.';
+        } else {
+          const text = await res.text();
+          document.getElementById('message').innerText = 'Submission failed: ' + text;
+        }
+      } catch (err) {
+        document.getElementById('message').innerText = 'Error: ' + err.message;
+      }
+    });
+  </script>
+</body>
+</html>
