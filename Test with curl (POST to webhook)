@@ -1,0 +1,3 @@
+curl -X POST "https://REPLACE_ME_YOUR_SERVER_OR_MAKE_WEBHOOK" \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Test User","email":"test@example.com","phone":"1234567890","submittedAt":"2025-12-07T00:00:00Z"}'
