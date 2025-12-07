@@ -1,0 +1,45 @@
+{
+  "botName": "NxtWave Webinar Qualifier",
+  "steps": [
+    { "id": "welcome", "type": "message", "text": "Hi! 👋 I'm the NxtWave webinar assistant. Can I know your name?" },
+    { "id": "capture_name", "type": "input", "field": "name" },
+    { "id": "capture_email", "type": "input", "field": "email", "validation": "email" },
+    { "id": "capture_phone", "type": "input", "field": "phone", "validation": "phone" },
+    { "id": "student_or_prof", "type": "choice", "question": "Are you a Student or Working Professional?", "choices": ["Student", "Working Professional", "Not interested", "Maybe later"] },
+    { "id": "background", "type": "choice", "question": "Your background?", "choices": ["Tech", "Non-Tech"] },
+    { "id": "career_path", "type": "choice", "question": "Preferred career path?", "choices": ["Full Stack", "Data Science", "AI-ML", "Cybersecurity"] },
+    { "id": "start_30days", "type": "choice", "question": "Ready to start within the next 30 days?", "choices": ["Yes", "No"] }
+  ],
+  "conditionalResponses": [
+    {
+      "condition": {"studentOrProf":"Student","year":"Final Year","background":"Tech"},
+      "response": "Great! You’re eligible for our Full Stack Fast-Track."
+    },
+    {
+      "condition": {"studentOrProf":"Working Professional","background":"Non-Tech"},
+      "response": "Awesome! Many professionals like you have transitioned successfully."
+    },
+    {
+      "condition": {"any":["Not interested","Maybe later"]},
+      "response": "No problem — thanks for your time. If you change your mind, we are here!"
+    }
+  ],
+  "onQualified": {
+    "criteria": {
+      "start30Days": "Yes",
+      "career_path": ["Full Stack","Data Science","AI-ML","Cybersecurity"]
+    },
+    "action": {
+      "type": "webhook",
+      "url": "https://REPLACE_ME_YOUR_WEBHOOK",
+      "payload": {
+        "name":"{{name}}",
+        "email":"{{email}}",
+        "phone":"{{phone}}",
+        "status":"Hot Lead",
+        "careerPath":"{{career_path}}",
+        "source":"Webinar Bot"
+      }
+    }
+  }
+}
